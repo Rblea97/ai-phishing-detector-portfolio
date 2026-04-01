@@ -41,6 +41,7 @@ class Label(StrEnum):
 
 
 class EmailRecord(BaseModel):
+    id: str = ""
     label: Label
     source: str = Field(min_length=1)
     subject: str = ""
@@ -84,6 +85,7 @@ def load_dataset(path: Path | str | IO[str]) -> list[EmailRecord]:
             records.append(
                 EmailRecord.model_validate(
                     {
+                        "id": row.get("id", ""),
                         "label": row["label"],
                         "source": row.get("source", ""),
                         "subject": row.get("subject", ""),
