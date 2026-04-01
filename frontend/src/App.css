@@ -1,0 +1,388 @@
+/* ── Layout ──────────────────────────────────────────────────────────────── */
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.app-header {
+  padding: 2rem 2rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.app-title {
+  margin: 0 0 0.25rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-h);
+  letter-spacing: -0.03em;
+}
+
+.app-subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.app-main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .app-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+.app-footer {
+  padding: 1rem 2rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ── Form panel ──────────────────────────────────────────────────────────── */
+
+.form-panel {
+  padding: 1.5rem 2rem;
+  border-right: 1px solid var(--border);
+}
+
+@media (max-width: 900px) {
+  .form-panel {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+/* ── Sample picker ───────────────────────────────────────────────────────── */
+
+.sample-picker {
+  margin-bottom: 1.5rem;
+}
+
+.sample-picker__label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin: 0 0 0.75rem;
+}
+
+.sample-picker__groups {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sample-group__heading {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.4rem;
+}
+
+.sample-group__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.sample-btn {
+  padding: 0.3rem 0.65rem;
+  font-size: 0.78rem;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  background: var(--card-bg);
+  transition: opacity 0.15s;
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sample-btn--phishing {
+  color: var(--risk-high);
+  border-color: var(--risk-high-border);
+}
+
+.sample-btn--phishing:hover {
+  background: var(--risk-high-bg);
+}
+
+.sample-btn--legit {
+  color: var(--risk-low);
+  border-color: var(--risk-low-border);
+}
+
+.sample-btn--legit:hover {
+  background: var(--risk-low-bg);
+}
+
+/* ── Email form ──────────────────────────────────────────────────────────── */
+
+.email-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.field-input,
+.field-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.6rem 0.75rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-h);
+  font-size: 0.9rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.15s;
+}
+
+.field-textarea {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.field-input:focus,
+.field-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.analyze-btn {
+  margin-top: 0.5rem;
+  padding: 0.7rem 1.5rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: opacity 0.15s;
+}
+
+.analyze-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.analyze-btn:not(:disabled):hover {
+  opacity: 0.88;
+}
+
+.error-msg {
+  color: var(--risk-high);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* ── Result panel ────────────────────────────────────────────────────────── */
+
+.result-panel {
+  padding: 1.5rem 2rem;
+}
+
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.result-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ── Result card ─────────────────────────────────────────────────────────── */
+
+.result-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+}
+
+.result-card--loading,
+.result-card--disabled {
+  opacity: 0.6;
+}
+
+.result-card__title {
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+/* ── Risk badge ──────────────────────────────────────────────────────────── */
+
+.risk-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.risk-badge--high {
+  background: var(--risk-high-bg);
+  color: var(--risk-high);
+  border: 1px solid var(--risk-high-border);
+}
+
+.risk-badge--medium {
+  background: var(--risk-medium-bg);
+  color: var(--risk-medium);
+  border: 1px solid var(--risk-medium-border);
+}
+
+.risk-badge--low {
+  background: var(--risk-low-bg);
+  color: var(--risk-low);
+  border: 1px solid var(--risk-low-border);
+}
+
+.risk-high { color: var(--risk-high); }
+.risk-low  { color: var(--risk-low); }
+
+/* ── Score bar ───────────────────────────────────────────────────────────── */
+
+.score-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.6rem;
+}
+
+.score-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-h);
+  font-variant-numeric: tabular-nums;
+}
+
+.score-bar {
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.25rem;
+}
+
+.score-bar__fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.score-bar__fill--high   { background: var(--risk-high); }
+.score-bar__fill--medium { background: var(--risk-medium); }
+.score-bar__fill--low    { background: var(--risk-low); }
+
+.score-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin: 0 0 1rem;
+}
+
+/* ── Top features ────────────────────────────────────────────────────────── */
+
+.features__heading,
+.iocs__heading {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  margin: 0 0 0.5rem;
+}
+
+.features__list,
+.iocs__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.features__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.features__token {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  color: var(--text-h);
+  background: var(--code-bg);
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+}
+
+.features__weight {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── LLM card specifics ──────────────────────────────────────────────────── */
+
+.reasoning {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0 0 1rem;
+}
+
+.iocs__item {
+  font-size: 0.85rem;
+  padding: 0.25rem 0.5rem;
+  background: var(--risk-high-bg);
+  border-left: 2px solid var(--risk-high-border);
+  border-radius: 2px;
+  color: var(--text-h);
+}
+
+.loading-text,
+.disabled-text {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0;
+}
