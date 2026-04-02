@@ -9,7 +9,7 @@
 
 > Detects phishing emails using a two-layer ML + LLM pipeline with full explainability.
 
-**[LIVE DEMO →](https://your-render-url.onrender.com)** &nbsp;|&nbsp; **[Watch Demo Video →](https://LOOM_URL_HERE)**
+**[LIVE DEMO →](https://your-render-url.onrender.com)** &nbsp;|&nbsp; **[Watch Demo Video →](https://youtu.be/ezv7Pp-UZzk)**
 
 ---
 
