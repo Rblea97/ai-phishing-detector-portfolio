@@ -42,6 +42,7 @@ def test_parse_response_with_markdown_fence() -> None:
     """Claude sometimes wraps JSON in a markdown code fence."""
     raw = '```json\n{"risk_level": "low", "reasoning": "Looks fine.", "iocs": []}\n```'
     result = parse_llm_response(raw)
+    assert result is not None
     assert result.risk_level == "low"
     assert result.iocs == []
 
