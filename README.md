@@ -9,7 +9,7 @@
 
 > Detects phishing emails using a two-layer ML + LLM pipeline with full explainability.
 
-**[LIVE DEMO →](https://phishing-detector-ui-s3bf.onrender.com)** &nbsp;|&nbsp; **[Watch Demo Video →](https://youtu.be/ezv7Pp-UZzk)**
+**[LIVE DEMO →](https://phishing-detector-ui-s3bf.onrender.com)** &nbsp;|&nbsp; **[Watch Demo Video →](https://youtu.be/0PpsLqxvWEA)**
 
 ---
 
