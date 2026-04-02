@@ -31,3 +31,7 @@ Thumbs.db
 
 # Superpowers session files
 .superpowers/
+
+# Demo recording output
+scripts/node_modules/
+scripts/video-out/
