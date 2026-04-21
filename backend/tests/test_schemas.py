@@ -9,6 +9,7 @@ from app.schemas import (
     LLMResult,
     MLResult,
     SampleEmail,
+    SiemLogEntry,
 )
 
 # ── AnalyzeRequest ────────────────────────────────────────────────────────────
@@ -95,16 +96,30 @@ def test_llm_result_invalid_risk_level_raises() -> None:
 # ── AnalyzeResponse ───────────────────────────────────────────────────────────
 
 
+def _siem_log() -> SiemLogEntry:
+    return SiemLogEntry(
+        timestamp="2026-04-21T00:00:00Z",
+        event_type="email_threat_assessment",
+        verdict="PHISHING",
+        severity="HIGH",
+        confidence=0.9,
+        mitre_technique="T1566.001",
+        iocs=[],
+        header_flags=[],
+        analyst_notes="",
+    )
+
+
 def test_analyze_response_llm_can_be_none() -> None:
     ml = MLResult(score=0.5, risk_level="medium", top_features=[])
-    response = AnalyzeResponse(ml=ml, llm=None)
+    response = AnalyzeResponse(ml=ml, llm=None, siem_log=_siem_log())
     assert response.llm is None
 
 
 def test_analyze_response_with_llm_result() -> None:
     ml = MLResult(score=0.9, risk_level="high", top_features=[])
     llm = LLMResult(risk_level="high", reasoning="Suspicious.", iocs=["urgency"])
-    response = AnalyzeResponse(ml=ml, llm=llm)
+    response = AnalyzeResponse(ml=ml, llm=llm, siem_log=_siem_log())
     assert response.llm is not None
     assert response.llm.iocs == ["urgency"]
 

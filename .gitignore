@@ -35,3 +35,12 @@ Thumbs.db
 # Demo recording output
 scripts/node_modules/
 scripts/video-out/
+scripts/package-lock.json
+
+# PAI internal files
+MEMORY/
+Plans/
+frontend/MEMORY/
+
+# Test coverage
+backend/.coverage

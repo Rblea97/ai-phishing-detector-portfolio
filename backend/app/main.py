@@ -15,10 +15,12 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.headers import parse_headers
 from app.llm import analyze as llm_analyze
 from app.ml import analyze as ml_analyze
 from app.samples import SAMPLES
 from app.schemas import AnalyzeRequest, AnalyzeResponse
+from app.siem import build_siem_log
 
 
 @asynccontextmanager
@@ -68,4 +70,11 @@ async def analyze(request: AnalyzeRequest) -> AnalyzeResponse:
         body=request.body,
         ml_score=ml_result.score,
     )
-    return AnalyzeResponse(ml=ml_result, llm=llm_result)
+    header_analysis = parse_headers(request.headers)
+    siem_log = build_siem_log(ml=ml_result, llm=llm_result, header_analysis=header_analysis)
+    return AnalyzeResponse(
+        ml=ml_result,
+        llm=llm_result,
+        header_analysis=header_analysis,
+        siem_log=siem_log,
+    )

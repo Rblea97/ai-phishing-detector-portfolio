@@ -2,6 +2,8 @@
 import json
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 from app.llm import analyze, build_prompt, parse_llm_response
 from app.schemas import LLMResult
 
@@ -67,6 +69,15 @@ def test_parse_missing_field_returns_none() -> None:
 # ── analyze ───────────────────────────────────────────────────────────────────
 
 
+def test_get_client_returns_none_when_api_key_absent(monkeypatch: pytest.MonkeyPatch) -> None:
+    """_get_client() must return None directly when ANTHROPIC_API_KEY is not set."""
+    from app.llm import _get_client
+
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    result = _get_client()
+    assert result is None
+
+
 def test_analyze_returns_none_when_no_api_key() -> None:
     """When ANTHROPIC_API_KEY is absent, analyze() should return None gracefully."""
     with patch.dict("os.environ", {}, clear=True):
@@ -112,6 +123,23 @@ def test_analyze_returns_none_on_bad_response() -> None:
     """When Claude returns unparseable output, analyze() returns None."""
     mock_message = MagicMock()
     mock_message.content = [MagicMock(text="Sorry, I cannot help with that.")]
+
+    mock_client = MagicMock()
+    mock_client.messages.create.return_value = mock_message
+
+    with patch("app.llm._get_client", return_value=mock_client):
+        result = analyze(subject="Test", body="Test body.", ml_score=0.5)
+
+    assert result is None
+
+
+def test_analyze_returns_none_when_content_block_has_no_text() -> None:
+    """When Claude returns a content block without a .text attr, returns None."""
+    # Create a mock block that does NOT have a .text attribute
+    mock_block = MagicMock(spec=[])  # spec=[] means no attributes at all
+
+    mock_message = MagicMock()
+    mock_message.content = [mock_block]
 
     mock_client = MagicMock()
     mock_client.messages.create.return_value = mock_message

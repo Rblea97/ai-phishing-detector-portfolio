@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { analyzeEmail, fetchSamples } from './api/client'
 import { MLResultCard } from './components/MLResultCard'
 import { LLMResultCard } from './components/LLMResultCard'
+import { HeaderAnalysisCard } from './components/HeaderAnalysisCard'
 import type { AnalyzeResponse, SampleEmail } from './types'
 import './App.css'
 
@@ -14,6 +15,7 @@ type AppState =
 export default function App() {
   const [subject, setSubject] = useState('')
   const [body, setBody] = useState('')
+  const [headers, setHeaders] = useState('')
   const [samples, setSamples] = useState<SampleEmail[]>([])
   const [state, setState] = useState<AppState>({ status: 'idle' })
   const resultRef = useRef<HTMLElement>(null)
@@ -27,6 +29,7 @@ export default function App() {
   function loadSample(sample: SampleEmail) {
     setSubject(sample.subject)
     setBody(sample.body)
+    setHeaders('')
     setState({ status: 'idle' })
   }
 
@@ -35,7 +38,7 @@ export default function App() {
     if (!subject.trim() && !body.trim()) return
     setState({ status: 'loading' })
     try {
-      const result = await analyzeEmail({ subject, body })
+      const result = await analyzeEmail({ subject, body, headers: headers || undefined })
       setState({ status: 'done', result })
       setTimeout(() => resultRef.current?.scrollIntoView({ behavior: 'smooth' }), 50)
     } catch (err) {
@@ -120,6 +123,26 @@ export default function App() {
               onChange={(e) => setBody(e.target.value)}
             />
 
+            <details className="headers-toggle">
+              <summary className="headers-toggle__summary">
+                Add raw email headers{' '}
+                <span className="headers-toggle__hint">
+                  (optional — enables SPF/DKIM/DMARC analysis)
+                </span>
+              </summary>
+              <label className="field-label" htmlFor="headers">
+                Raw Headers
+              </label>
+              <textarea
+                id="headers"
+                className="field-textarea"
+                rows={6}
+                placeholder="Paste raw email headers here…"
+                value={headers}
+                onChange={(e) => setHeaders(e.target.value)}
+              />
+            </details>
+
             <button
               type="submit"
               className="analyze-btn"
@@ -155,6 +178,9 @@ export default function App() {
               <LLMResultCard
                 result={state.status === 'done' ? state.result.llm : null}
                 loading={state.status === 'loading'}
+              />
+              <HeaderAnalysisCard
+                result={state.status === 'done' ? state.result.header_analysis : null}
               />
             </div>
           )}
