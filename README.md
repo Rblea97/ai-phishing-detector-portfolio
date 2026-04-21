@@ -1,8 +1,8 @@
 # AI Phishing Detector
 
-[![Backend CI](https://github.com/Rblea97/ai-phishing-detector-portfolio/actions/workflows/backend.yml/badge.svg)](https://github.com/Rblea97/ai-phishing-detector-portfolio/actions/workflows/backend.yml)
-[![Frontend CI](https://github.com/Rblea97/ai-phishing-detector-portfolio/actions/workflows/frontend.yml/badge.svg)](https://github.com/Rblea97/ai-phishing-detector-portfolio/actions/workflows/frontend.yml)
-[![CodeQL](https://github.com/Rblea97/ai-phishing-detector-portfolio/actions/workflows/codeql.yml/badge.svg)](https://github.com/Rblea97/ai-phishing-detector-portfolio/actions/workflows/codeql.yml)
+[![Backend CI](https://github.com/Rblea97/ai-phishing-detector-portfolio/actions/workflows/backend.yml/badge.svg?branch=master)](https://github.com/Rblea97/ai-phishing-detector-portfolio/actions/workflows/backend.yml)
+[![Frontend CI](https://github.com/Rblea97/ai-phishing-detector-portfolio/actions/workflows/frontend.yml/badge.svg?branch=master)](https://github.com/Rblea97/ai-phishing-detector-portfolio/actions/workflows/frontend.yml)
+[![CodeQL](https://github.com/Rblea97/ai-phishing-detector-portfolio/actions/workflows/codeql.yml/badge.svg?branch=master)](https://github.com/Rblea97/ai-phishing-detector-portfolio/actions/workflows/codeql.yml)
 ![Coverage](https://img.shields.io/badge/coverage-98%25-brightgreen)
 ![Python](https://img.shields.io/badge/Python-3.12-blue?logo=python&logoColor=white)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)
