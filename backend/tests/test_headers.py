@@ -4,14 +4,13 @@ Tests for backend/app/headers.py — email header IOC parsing.
 TDD: these tests are written FIRST before the implementation exists.
 All tests should FAIL (RED) until headers.py is implemented.
 """
-import pytest
 
 # ── Test fixtures ─────────────────────────────────────────────────────────────
 
 CLEAN_HEADERS = """From: sender@goodcompany.com
 Reply-To: sender@goodcompany.com
 Return-Path: <sender@goodcompany.com>
-Authentication-Results: mx.example.com; spf=pass smtp.mailfrom=goodcompany.com; dkim=pass header.d=goodcompany.com; dmarc=pass"""
+Authentication-Results: mx.example.com; spf=pass smtp.mailfrom=goodcompany.com; dkim=pass header.d=goodcompany.com; dmarc=pass"""  # noqa: E501
 
 REPLY_TO_MISMATCH_HEADERS = """From: PayPal Support <support@paypal.com>
 Reply-To: harvest@attacker.example.com
@@ -36,12 +35,12 @@ Authentication-Results: mx.example.com; spf=fail smtp.mailfrom=evil.com; dkim=pa
 SPF_SOFTFAIL_HEADERS = """From: news@newsletter.com
 Reply-To: news@newsletter.com
 Return-Path: <news@newsletter.com>
-Authentication-Results: mx.example.com; spf=softfail smtp.mailfrom=newsletter.com; dkim=pass; dmarc=pass"""
+Authentication-Results: mx.example.com; spf=softfail smtp.mailfrom=newsletter.com; dkim=pass; dmarc=pass"""  # noqa: E501
 
 SPF_PASS_HEADERS = """From: contact@verified.org
 Reply-To: contact@verified.org
 Return-Path: <contact@verified.org>
-Authentication-Results: mx.example.com; spf=pass smtp.mailfrom=verified.org; dkim=pass; dmarc=pass"""
+Authentication-Results: mx.example.com; spf=pass smtp.mailfrom=verified.org; dkim=pass; dmarc=pass"""  # noqa: E501
 
 DKIM_FAIL_HEADERS = """From: newsletter@news.example.com
 Reply-To: newsletter@news.example.com

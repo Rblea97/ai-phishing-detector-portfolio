@@ -66,7 +66,7 @@ class AnalyzeRequest(BaseModel):
     body: str
     headers: str | None = Field(
         default=None,
-        description="Raw email headers as plain text — paste the full header block from your email client",
+        description="Raw email headers — paste the full header block from your email client",
     )
 
 

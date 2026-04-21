@@ -194,7 +194,8 @@ async def test_analyze_with_spf_fail_headers_has_spf_fail_flag() -> None:
         "From: admin@legitimate-looking.com\r\n"
         "Reply-To: admin@legitimate-looking.com\r\n"
         "Return-Path: <admin@legitimate-looking.com>\r\n"
-        "Authentication-Results: mx.example.com; spf=fail smtp.mailfrom=evil.com; dkim=pass; dmarc=pass"
+        "Authentication-Results: mx.example.com; spf=fail smtp.mailfrom=evil.com;"
+        " dkim=pass; dmarc=pass"
     )
     with patch("app.main.ml_analyze", return_value=_ml_result()):
         with patch("app.main.llm_analyze", return_value=None):

@@ -10,7 +10,7 @@ Public surface
 """
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from app.schemas import HeaderAnalysis, LLMResult, MLResult, SiemLogEntry
 
@@ -38,7 +38,7 @@ def build_siem_log(
     SiemLogEntry
         Always populated — never None.
     """
-    timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    timestamp = datetime.now(UTC).isoformat().replace("+00:00", "Z")
 
     if ml.score >= 0.5:
         verdict = "PHISHING"
