@@ -1,73 +1,79 @@
-# React + TypeScript + Vite
+# AI Phishing Detector — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React 19 + TypeScript (Vite) frontend for the AI Phishing Detector portfolio project.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Single-page application that submits email text to the backend API and renders results from three analysis layers side by side:
 
-## React Compiler
+- **ML Baseline card** — phishing probability score, progress bar, top contributing TF-IDF tokens
+- **Claude Analysis card** — LLM risk level, reasoning paragraph, extracted IOC list
+- **Header Analysis card** — SPF/DKIM/DMARC badges, domain chain, header flags
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+| | |
+|---|---|
+| Framework | React 19 with hooks |
+| Language | TypeScript 5.9 (strict mode) |
+| Build tool | Vite 8 |
+| Testing | Vitest + Testing Library |
+| Linting | ESLint (TypeScript-aware rules) |
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Commands
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install        # install dependencies
+npm run dev        # dev server → http://localhost:5173
+npm test           # run Vitest tests (16 tests)
+npm run lint       # ESLint
+npm run typecheck  # tsc --noEmit
+npm run build      # production build → dist/
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Key Components
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Component | Purpose |
+|---|---|
+| `App.tsx` | Form, sample picker, state machine (idle → loading → done/error) |
+| `MLResultCard.tsx` | Score bar + top feature token list |
+| `LLMResultCard.tsx` | Risk badge + reasoning + IOC list; graceful degrade when LLM unavailable |
+| `HeaderAnalysisCard.tsx` | SPF/DKIM/DMARC status badges + domain chain + header flags |
+| `RiskBadge.tsx` | Reusable risk level indicator (high/medium/low) |
+| `api/client.ts` | Typed fetch wrappers for `GET /api/samples` and `POST /api/analyze` |
+| `types.ts` | TypeScript interfaces mirroring backend Pydantic schemas |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Backend API
+
+Expects the FastAPI backend running at `http://localhost:8000`. The `VITE_API_BASE_URL` environment variable overrides the default.
+
+```typescript
+// POST /api/analyze
+interface AnalyzeRequest {
+  subject: string
+  body: string
+  headers?: string   // optional raw email header block
+}
+
+interface AnalyzeResponse {
+  ml: MLResult
+  llm: LLMResult | null   // null when ANTHROPIC_API_KEY not set
+  header_analysis: HeaderAnalysis | null
+  siem_log: SiemLogEntry
+}
 ```
+
+See `src/types.ts` for the full type definitions.
+
+## Deployment
+
+Deployed to Render as a static site behind Nginx. The `nginx.conf` proxies `/api/*` requests to the backend service. See the root `render.yaml` for the full blueprint.
+
+```bash
+npm run build   # → dist/
+# Nginx serves dist/ and proxies /api/ to the backend
+```
+
+---
+
+Part of the [AI Phishing Detector](../README.md) portfolio project.

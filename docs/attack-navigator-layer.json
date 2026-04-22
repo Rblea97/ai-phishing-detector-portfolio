@@ -1,0 +1,181 @@
+{
+  "name": "AI Phishing Detector — ATT&CK Coverage",
+  "versions": {
+    "attack": "14",
+    "navigator": "4.9",
+    "layer": "4.5"
+  },
+  "domain": "enterprise-attack",
+  "description": "MITRE ATT&CK Enterprise techniques detected or referenced by the AI Phishing Detector portfolio project. Open in https://mitre-attack.github.io/attack-navigator/ to visualise coverage.",
+  "filters": {
+    "platforms": [
+      "Windows",
+      "macOS",
+      "Linux",
+      "Office Suite",
+      "SaaS"
+    ]
+  },
+  "sorting": 0,
+  "layout": {
+    "layout": "side",
+    "aggregateFunction": "average",
+    "showID": true,
+    "showName": true,
+    "showAggregateScores": false,
+    "countUnscored": false
+  },
+  "hideDisabled": false,
+  "techniques": [
+    {
+      "techniqueID": "T1566",
+      "tactic": "initial-access",
+      "score": 3,
+      "color": "#e6934c",
+      "comment": "Parent technique — generic phishing detection. Assigned when verdict=PHISHING and no URL IOC is present (e.g., BEC, executive impersonation).",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1566.001",
+      "tactic": "initial-access",
+      "score": 1,
+      "color": "#ffcf8c",
+      "comment": "Spearphishing Attachment — referenced in coverage but not directly detected (detector is text-only; no file attachment analysis). Known limitation documented in MODEL_CARD.md.",
+      "enabled": true,
+      "metadata": [],
+      "links": []
+    },
+    {
+      "techniqueID": "T1566.002",
+      "tactic": "initial-access",
+      "score": 3,
+      "color": "#e6934c",
+      "comment": "Spearphishing Link — primary detected sub-technique. Assigned when verdict=PHISHING and LLM IOC list contains a URL (http/https). Covers credential-harvesting links, fake login pages, open redirects.",
+      "enabled": true,
+      "metadata": [],
+      "links": []
+    },
+    {
+      "techniqueID": "T1566.003",
+      "tactic": "initial-access",
+      "score": 1,
+      "color": "#ffcf8c",
+      "comment": "Spearphishing via Service — referenced in threat model. Not directly detected (requires social media / third-party service context outside email).",
+      "enabled": true,
+      "metadata": [],
+      "links": []
+    },
+    {
+      "techniqueID": "T1598",
+      "tactic": "reconnaissance",
+      "score": 2,
+      "color": "#f7a277",
+      "comment": "Phishing for Information — ML model detects recon-style phishing (credential solicitation, low-payload messages designed to harvest info rather than deliver malware).",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1598.003",
+      "tactic": "reconnaissance",
+      "score": 2,
+      "color": "#f7a277",
+      "comment": "Spearphishing Link (Reconnaissance variant) — credential harvest patterns detected via TF-IDF lexicon: urgency + credential-solicitation token co-occurrence.",
+      "enabled": true,
+      "metadata": [],
+      "links": []
+    },
+    {
+      "techniqueID": "T1036",
+      "tactic": "defense-evasion",
+      "score": 2,
+      "color": "#f7a277",
+      "comment": "Masquerading — detected via header analysis: Reply-To domain mismatch, From display-name vs From domain mismatch (reply_to_mismatch flag).",
+      "enabled": true,
+      "metadata": [],
+      "links": []
+    },
+    {
+      "techniqueID": "T1656",
+      "tactic": "defense-evasion",
+      "score": 2,
+      "color": "#f7a277",
+      "comment": "Impersonation — LLM layer detects executive impersonation, brand impersonation (Microsoft, PayPal, USPS) from email content. ML detects via authority-impersonation lexicon in TF-IDF features.",
+      "enabled": true,
+      "metadata": [],
+      "links": []
+    },
+    {
+      "techniqueID": "T1204",
+      "tactic": "execution",
+      "score": 1,
+      "color": "#ffcf8c",
+      "comment": "User Execution — referenced as the downstream action after phishing delivery. The detector flags the delivery (T1566.002); T1204 represents what happens after the user clicks.",
+      "enabled": true,
+      "metadata": [],
+      "links": [],
+      "showSubtechniques": true
+    },
+    {
+      "techniqueID": "T1204.001",
+      "tactic": "execution",
+      "score": 1,
+      "color": "#ffcf8c",
+      "comment": "User Execution: Malicious Link — downstream execution phase for T1566.002 detections.",
+      "enabled": true,
+      "metadata": [],
+      "links": []
+    }
+  ],
+  "gradient": {
+    "colors": [
+      "#ffffff",
+      "#ffcf8c",
+      "#e6934c"
+    ],
+    "minValue": 0,
+    "maxValue": 3
+  },
+  "legendItems": [
+    {
+      "label": "Directly detected (primary)",
+      "color": "#e6934c"
+    },
+    {
+      "label": "Partially detected / referenced",
+      "color": "#f7a277"
+    },
+    {
+      "label": "Referenced but not detected (known gap)",
+      "color": "#ffcf8c"
+    }
+  ],
+  "metadata": [
+    {
+      "name": "Project",
+      "value": "AI Phishing Detector Portfolio"
+    },
+    {
+      "name": "Author",
+      "value": "Richard Blea"
+    },
+    {
+      "name": "Created",
+      "value": "2026-04-21"
+    },
+    {
+      "name": "ATT&CK version",
+      "value": "v14 Enterprise"
+    }
+  ],
+  "links": [],
+  "showTacticRowBackground": true,
+  "tacticRowBackground": "#dddddd",
+  "selectTechniquesAcrossTactics": true,
+  "selectSubtechniquesWithParent": false,
+  "selectVisibleTechniques": false
+}

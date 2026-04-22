@@ -15,6 +15,25 @@ from datetime import UTC, datetime
 from app.schemas import HeaderAnalysis, LLMResult, MLResult, SiemLogEntry
 
 
+def _assign_mitre_technique(verdict: str, iocs: list[str]) -> str:
+    """
+    Map verdict + LLM-extracted IOCs to the most specific applicable ATT&CK technique.
+
+    T1566.002 (Spearphishing Link) is assigned when a URL is detected in the IOC list,
+    since the detector is text-based and the primary delivery vector in detected emails
+    is credential-harvesting hyperlinks.  BEC-style phishing (wire-transfer fraud,
+    impersonation without a payload URL) maps to the parent T1566.
+
+    ATT&CK sub-technique reference: https://attack.mitre.org/techniques/T1566/
+    """
+    if verdict != "PHISHING":
+        return "T1566"
+    for ioc in iocs:
+        if "http" in ioc.lower():
+            return "T1566.002"  # Spearphishing Link — URL present in IOC
+    return "T1566"  # Generic phishing (BEC, impersonation, no clear URL payload)
+
+
 def build_siem_log(
     *,
     ml: MLResult,
@@ -48,10 +67,8 @@ def build_siem_log(
         verdict = "UNCERTAIN"
 
     severity = ml.risk_level.upper()
-    mitre_technique = "T1566.001" if verdict == "PHISHING" else "T1566"
-
-    # Deduplicate IOCs while preserving insertion order (Python 3.7+)
     iocs: list[str] = list(dict.fromkeys(llm.iocs)) if llm else []
+    mitre_technique = _assign_mitre_technique(verdict, iocs)
 
     header_flags: list[str] = (
         [f.name for f in header_analysis.flags] if header_analysis else []

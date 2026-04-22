@@ -87,13 +87,35 @@ def test_mid_score_severity_is_medium() -> None:
 
 
 # ── MITRE technique ───────────────────────────────────────────────────────────
+# T1566.002 = Spearphishing Link (URL in IOC list)
+# T1566     = Generic Phishing  (BEC / no URL payload identified)
+# https://attack.mitre.org/techniques/T1566/
 
 
-def test_phishing_verdict_mitre_is_t1566_001() -> None:
+def test_phishing_with_url_ioc_mitre_is_t1566_002() -> None:
+    """URL in IOC list → Spearphishing Link (T1566.002), the most specific match."""
+    from app.siem import build_siem_log
+
+    llm = _llm(iocs=["http://bank-fake.example/reset", "urgency language"])
+    log = build_siem_log(ml=_ml(0.97, "high"), llm=llm, header_analysis=None)
+    assert log.mitre_technique == "T1566.002"
+
+
+def test_phishing_without_url_ioc_mitre_is_t1566() -> None:
+    """BEC-style phishing with no URL payload falls back to parent T1566."""
+    from app.siem import build_siem_log
+
+    llm = _llm(iocs=["wire transfer request", "executive impersonation"])
+    log = build_siem_log(ml=_ml(0.97, "high"), llm=llm, header_analysis=None)
+    assert log.mitre_technique == "T1566"
+
+
+def test_phishing_with_no_llm_mitre_is_t1566() -> None:
+    """No LLM output means no IOCs — fall back to generic T1566."""
     from app.siem import build_siem_log
 
     log = build_siem_log(ml=_ml(0.97, "high"), llm=None, header_analysis=None)
-    assert log.mitre_technique == "T1566.001"
+    assert log.mitre_technique == "T1566"
 
 
 def test_non_phishing_verdict_mitre_is_t1566() -> None:
